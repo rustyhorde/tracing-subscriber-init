@@ -1,0 +1,36 @@
+[package]
+authors = ["Jason Ozias <jason.g.ozias@gmail.com>"]
+categories = ["config", "development-tools::debugging", "development-tools::profiling"]
+description = "A trait and some functions to make tracing subscriber initialization a bit easier"
+documentation = "https://docs.rs/tracing-subscriber-init"
+edition = "2021"
+homepage = "https://github.com/rustyhorde/tracing-subscriber-init"
+keywords = ["tracing", "tracing-subscriber", "configuration"]
+license = "MIT OR Apache-2.0"
+name = "tracing-subscriber-init"
+readme = "README.md"
+repository = "https://github.com/rustyhorde/tracing-subscriber-init"
+resolver = "2"
+version = "0.1.0"
+
+[package.metadata.cargo-all-features]
+denylist = ["time"]
+
+[package.metadata.docs.rs]
+all-features = true
+rustdoc-args = ["--cfg", "docsrs"]
+
+[features]
+json = ["tracing-subscriber/json"]
+tstime = ["tracing-subscriber/time", "time"]
+
+[dependencies]
+anyhow = "1.0.71"
+time = { version = "0.3.21", default-features = false, features = [
+    "formatting",
+], optional = true }
+tracing = { version = "0.1.37", features = ["max_level_trace"] }
+tracing-subscriber = "0.3.17"
+
+[build-dependencies]
+rustversion = "1.0.12"
