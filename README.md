@@ -11,6 +11,7 @@ Convenience trait and functions to ease [`tracing-subscriber`][tracing-subscribe
 
 ## MSRV
 The current minimum supported rust version is 1.65.0 for non-Windows platforms
+
 The current minimum supported rust version is 1.65.0 for Windows platforms
 
 [tracing-subscriber]: https://docs.rs/tracing-subscriber/latest/tracing_subscriber/
