@@ -10,7 +10,6 @@ license = "MIT OR Apache-2.0"
 name = "tracing-subscriber-init"
 readme = "README.md"
 repository = "https://github.com/rustyhorde/tracing-subscriber-init"
-resolver = "2"
 version = "0.1.0"
 
 [package.metadata.cargo-all-features]
@@ -23,6 +22,7 @@ rustdoc-args = ["--cfg", "docsrs"]
 [features]
 json = ["tracing-subscriber/json"]
 tstime = ["tracing-subscriber/time", "time"]
+unstable = []
 
 [dependencies]
 anyhow = "1.0.71"

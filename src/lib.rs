@@ -6,20 +6,36 @@
 // option. All files in the project carrying such notice may not be copied,
 // modified, or distributed except according to those terms.
 
-//! Convenience functions to initialize a [`tracing-subscriber`](https://docs.rs/tracing-subscriber/latest/tracing_subscriber/)
+//! Convenience trait and functions to ease [`tracing-subscriber`][tracing-subscriber] initialization.
 //!
+//! Program configuration can come from multiple sources. This crate supplies the [`TracingConfig`] trait to allow the grouping
+//! of [`tracing-subscriber`][tracing-subscriber] initialization related items.
+//!
+//! For example, I often have some configuration from the command line (quiet and verbose flags),
+//! some configuration from a configuration file, and some configuration (secrets) loaded from external sources.  I implement this
+//! trait on a struct to collect the [`tracing-subscriber`][tracing-subscriber] related configuration, then use functions such as
+//! [`full_filtered`](crate::full_filtered) to configure layers as appropriate.
+//!
+//! There are also convenience functions such as [`set_default`](crate::set_default) that will
+//! setup a [`Registry`](tracing_subscriber::registry::Registry), add the given vector of [`Layer`](tracing_subscriber::Layer),
+//! and initialize per the upstream functions of the
+//! [same name](https://docs.rs/tracing-subscriber/latest/tracing_subscriber/util/trait.SubscriberInitExt.html#method.set_default).
+//!
+//! [tracing-subscriber]: https://docs.rs/tracing-subscriber/latest/tracing_subscriber/
 //! # Example
 //! ```rust
 //! # use anyhow::Result;
+//! # use std::fs::File;
 //! # use tracing::{info, Level, span};
 //! # use tracing_subscriber::{Layer, fmt::format::FmtSpan};
-//! # use tracing_subscriber_init::{TracingConfig, full_filtered, set_default};
+//! # use tracing_subscriber_init::{TracingConfig, full, full_filtered, set_default};
 //! #
 //! # pub fn main() -> Result<()> {
 //! #[derive(Clone, Debug, Default)]
 //! struct TomlConfig {
 //!     // ...other configuration
 //!     tracing: Tracing,
+//!     tracing_file: TracingFile,
 //!     // ...other configuration
 //! }
 //!
@@ -32,10 +48,12 @@
 //! }
 //!
 //! impl TracingConfig for Tracing {
+//!     // Normally pulled from command line arguments, i.e. prog -qq
 //!     fn quiet(&self) -> u8 {
 //!         0
 //!     }
 //!
+//!     // Normally pulled from command line arguments, i.e. prog -vv
 //!     fn verbose(&self) -> u8 {
 //!         2
 //!     }
@@ -57,12 +75,48 @@
 //!     }
 //! }
 //!
+//! #[derive(Clone, Debug, Default)]
+//! struct TracingFile;
+//!
+//! impl TracingConfig for TracingFile {
+//!     fn quiet(&self) -> u8 {
+//!         0
+//!     }
+//!
+//!     fn verbose(&self) -> u8 {
+//!         3
+//!     }
+//!
+//!     fn with_ansi(&self) -> bool {
+//!         false
+//!     }
+//! }
+//!
+//! // Load configuration and pull out the tracing specific.
 //! let toml_config = TomlConfig::default();
 //! let tracing_config = toml_config.tracing;
+//! let tracing_file_config = toml_config.tracing_file;
+//!
+//! // Setup a full format, filtered layer.  The filtering is set based on the quiet
+//! // and verbose values from the configuration
 //! let layer = full_filtered(&tracing_config);
-//! let _unused = set_default(vec![layer.boxed()]);
+//!
+//! // Setup a second full format layer to write to a file.  Use the non-filtered
+//! // version when you wish to modify items such as the writer, or the time format.
+//! // You can also chose to ignore the generated level filter and apply your own.
+//! let file = File::create("trace.log")?;
+//! let (file_layer, level_filter) = full(&tracing_file_config);
+//! let file_layer = file_layer.with_writer(file).with_filter(level_filter);
+//!
+//! // Create a Registry, add the layers, and set this subscriber as the default
+//! // for this scope
+//! let _unused = set_default(vec![layer.boxed(), file_layer.boxed()]);
+//!
+//! // Create a new span and enter it.
 //! let span = span!(Level::INFO, "a new span");
 //! let _enter = span.enter();
+//!
+//! // Trace away...
 //! info!("info level");
 //! #    Ok(())
 //! # }
@@ -269,20 +323,23 @@
 #![cfg_attr(all(doc, nightly), feature(doc_auto_cfg))]
 
 mod config;
+mod format;
 mod initialize;
+mod utils;
 
 pub use config::Config as TracingConfig;
-pub use initialize::compact;
-pub use initialize::compact_filtered;
-pub use initialize::full;
-pub use initialize::full_filtered;
+pub use config::TestAll;
+pub use format::compact::compact;
+pub use format::compact::filtered as compact_filtered;
+pub use format::full::filtered as full_filtered;
+pub use format::full::full;
+#[cfg(feature = "json")]
+pub use format::json::filtered as json_filtered;
+#[cfg(feature = "json")]
+pub use format::json::json;
+pub use format::pretty::filtered as pretty_filtered;
+pub use format::pretty::pretty;
 pub use initialize::init;
-#[cfg(feature = "json")]
-pub use initialize::json;
-#[cfg(feature = "json")]
-pub use initialize::json_filtered;
-pub use initialize::pretty;
-pub use initialize::pretty_filtered;
 pub use initialize::set_default;
 pub use initialize::try_init;
 

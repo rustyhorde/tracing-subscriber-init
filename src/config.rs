@@ -8,7 +8,8 @@
 
 use tracing_subscriber::fmt::format::FmtSpan;
 
-/// Configuration used to build a [`Layer`](tracing_subscriber::Layer)
+/// Implement this trait to supply tracing configuration that can be used to build a [`Layer`](tracing_subscriber::Layer)
+/// with functions such as [`full_filtered`](crate::full_filtered).
 pub trait Config {
     /// Get the quiet count (these are normally pulled from the command line arguments)
     fn quiet(&self) -> u8;
@@ -71,10 +72,56 @@ pub trait Config {
     }
 }
 
+#[doc(hidden)]
+#[derive(Clone, Copy, Debug)]
+pub struct TestAll;
+
+impl Config for TestAll {
+    fn quiet(&self) -> u8 {
+        0
+    }
+
+    fn verbose(&self) -> u8 {
+        3
+    }
+
+    #[cfg(feature = "json")]
+    fn with_current_span(&self) -> bool {
+        true
+    }
+
+    fn with_file(&self) -> bool {
+        true
+    }
+
+    fn with_line_number(&self) -> bool {
+        true
+    }
+
+    fn with_span_events(&self) -> Option<FmtSpan> {
+        Some(FmtSpan::FULL)
+    }
+
+    #[cfg(feature = "json")]
+    fn with_span_list(&self) -> bool {
+        true
+    }
+
+    fn with_target(&self) -> bool {
+        true
+    }
+
+    fn with_thread_ids(&self) -> bool {
+        true
+    }
+
+    fn with_thread_names(&self) -> bool {
+        true
+    }
+}
+
 #[cfg(test)]
 pub(crate) mod test {
-    use tracing_subscriber::fmt::format::FmtSpan;
-
     use super::Config;
 
     #[derive(Clone, Debug)]
@@ -87,53 +134,6 @@ pub(crate) mod test {
 
         fn verbose(&self) -> u8 {
             1
-        }
-    }
-
-    #[derive(Clone, Debug)]
-    pub(crate) struct TestAllConfig;
-
-    impl Config for TestAllConfig {
-        fn quiet(&self) -> u8 {
-            0
-        }
-
-        fn verbose(&self) -> u8 {
-            3
-        }
-
-        #[cfg(feature = "json")]
-        fn with_current_span(&self) -> bool {
-            true
-        }
-
-        fn with_file(&self) -> bool {
-            true
-        }
-
-        fn with_line_number(&self) -> bool {
-            true
-        }
-
-        fn with_span_events(&self) -> Option<FmtSpan> {
-            Some(FmtSpan::FULL)
-        }
-
-        #[cfg(feature = "json")]
-        fn with_span_list(&self) -> bool {
-            true
-        }
-
-        fn with_target(&self) -> bool {
-            true
-        }
-
-        fn with_thread_ids(&self) -> bool {
-            true
-        }
-
-        fn with_thread_names(&self) -> bool {
-            true
         }
     }
 
