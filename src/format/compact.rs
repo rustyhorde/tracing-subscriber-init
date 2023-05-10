@@ -21,6 +21,21 @@ use crate::{utils::get_effective_level, TracingConfig};
 /// Create a [`Compact`](tracing_subscriber::fmt::format::Compact) format layer configured from the given [`TracingConfig`].
 ///
 /// # Example
+/// ```rust
+/// # use anyhow::Result;
+/// # use tracing::info;
+/// # use tracing_subscriber::Layer;
+/// # use tracing_subscriber_init::{compact, set_default, TestAll, TracingConfig};
+/// #
+/// # pub fn main() -> Result<()> {
+/// let config = TestAll;
+/// let (layer, level_filter) = compact(&config);
+/// let layer = layer.with_filter(level_filter);
+/// let _unused = set_default(vec![layer.boxed()]);
+/// info!("info level");
+/// #   Ok(())
+/// # }
+/// ```
 pub fn compact<C, S>(config: &C) -> (fmt::Layer<S, DefaultFields, Format<Compact>>, LevelFilter)
 where
     C: TracingConfig,
@@ -49,6 +64,20 @@ where
 /// Create a [`Compact`](tracing_subscriber::fmt::format::Compact) format filtered layer configured from the given [`TracingConfig`].
 ///
 /// # Example
+/// ```rust
+/// # use anyhow::Result;
+/// # use tracing::info;
+/// # use tracing_subscriber::Layer;
+/// # use tracing_subscriber_init::{compact_filtered, set_default, TestAll, TracingConfig};
+/// #
+/// # pub fn main() -> Result<()> {
+/// let config = TestAll;
+/// let layer = compact_filtered(&config);
+/// let _unused = set_default(vec![layer.boxed()]);
+/// info!("info level");
+/// #   Ok(())
+/// # }
+/// ```
 pub fn filtered<C, S>(
     config: &C,
 ) -> Filtered<fmt::Layer<S, DefaultFields, Format<Compact>>, LevelFilter, S>

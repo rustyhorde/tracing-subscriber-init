@@ -22,6 +22,21 @@ use crate::{utils::get_effective_level, TracingConfig};
 /// Create a [`Json`](tracing_subscriber::fmt::format::Json) format layer configured from the given [`TracingConfig`].
 ///
 /// # Example
+/// ```rust
+/// # use anyhow::Result;
+/// # use tracing::info;
+/// # use tracing_subscriber::Layer;
+/// # use tracing_subscriber_init::{json, set_default, TestAll, TracingConfig};
+/// #
+/// # pub fn main() -> Result<()> {
+/// let config = TestAll;
+/// let (layer, level_filter) = json(&config);
+/// let layer = layer.with_filter(level_filter);
+/// let _unused = set_default(vec![layer.boxed()]);
+/// info!("info level");
+/// #   Ok(())
+/// # }
+/// ```
 pub fn json<C, S>(config: &C) -> (fmt::Layer<S, JsonFields, Format<Json>>, LevelFilter)
 where
     C: TracingConfig,
@@ -54,6 +69,20 @@ where
 /// Create a [`Json`](tracing_subscriber::fmt::format::Json) format filtered layer configured from the given [`TracingConfig`].
 ///
 /// # Example
+/// ```rust
+/// # use anyhow::Result;
+/// # use tracing::info;
+/// # use tracing_subscriber::Layer;
+/// # use tracing_subscriber_init::{json_filtered, set_default, TestAll, TracingConfig};
+/// #
+/// # pub fn main() -> Result<()> {
+/// let config = TestAll;
+/// let layer = json_filtered(&config);
+/// let _unused = set_default(vec![layer.boxed()]);
+/// info!("info level");
+/// #   Ok(())
+/// # }
+/// ```
 pub fn filtered<C, S>(
     config: &C,
 ) -> Filtered<fmt::Layer<S, JsonFields, Format<Json>>, LevelFilter, S>

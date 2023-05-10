@@ -21,6 +21,21 @@ use crate::{utils::get_effective_level, TracingConfig};
 /// Create a [`Pretty`](tracing_subscriber::fmt::format::Pretty) format layer configured from the given [`TracingConfig`].
 ///
 /// # Example
+/// ```rust
+/// # use anyhow::Result;
+/// # use tracing::info;
+/// # use tracing_subscriber::Layer;
+/// # use tracing_subscriber_init::{pretty, set_default, TestAll, TracingConfig};
+/// #
+/// # pub fn main() -> Result<()> {
+/// let config = TestAll;
+/// let (layer, level_filter) = pretty(&config);
+/// let layer = layer.with_filter(level_filter);
+/// let _unused = set_default(vec![layer.boxed()]);
+/// info!("info level");
+/// #   Ok(())
+/// # }
+/// ```
 pub fn pretty<C, S>(config: &C) -> (fmt::Layer<S, Pretty, Format<Pretty>>, LevelFilter)
 where
     C: TracingConfig,
@@ -49,6 +64,20 @@ where
 /// Create a [`Pretty`](tracing_subscriber::fmt::format::Pretty) format filtered layer configured from the given [`TracingConfig`].
 ///
 /// # Example
+/// ```rust
+/// # use anyhow::Result;
+/// # use tracing::info;
+/// # use tracing_subscriber::Layer;
+/// # use tracing_subscriber_init::{pretty_filtered, set_default, TestAll, TracingConfig};
+/// #
+/// # pub fn main() -> Result<()> {
+/// let config = TestAll;
+/// let layer = pretty_filtered(&config);
+/// let _unused = set_default(vec![layer.boxed()]);
+/// info!("info level");
+/// #   Ok(())
+/// # }
+/// ```
 pub fn filtered<C, S>(config: &C) -> Filtered<fmt::Layer<S, Pretty, Format<Pretty>>, LevelFilter, S>
 where
     C: TracingConfig,
