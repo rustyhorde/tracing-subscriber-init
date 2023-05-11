@@ -10,6 +10,7 @@ use tracing_subscriber::fmt::format::FmtSpan;
 
 /// Implement this trait to supply tracing configuration that can be used to build a [`Layer`](tracing_subscriber::Layer)
 /// with functions such as [`full_filtered`](crate::full_filtered).
+#[cfg_attr(tarpaulin, ignore)]
 pub trait Config {
     /// Get the quiet count (these are normally pulled from the command line arguments)
     fn quiet(&self) -> u8;
