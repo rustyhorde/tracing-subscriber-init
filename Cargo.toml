@@ -10,7 +10,7 @@ license = "MIT OR Apache-2.0"
 name = "tracing-subscriber-init"
 readme = "README.md"
 repository = "https://github.com/rustyhorde/tracing-subscriber-init"
-version = "0.1.2"
+version = "0.1.3"
 
 [package.metadata.cargo-all-features]
 denylist = ["time"]
