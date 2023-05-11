@@ -102,7 +102,7 @@ mod test {
 
     use super::filtered as json_filtered;
 
-    use crate::{config::test::TestConfig, set_default, TestAll};
+    use crate::{utils::test::TestConfig, set_default, TestAll};
 
     #[test]
     fn json_filtered_works() {

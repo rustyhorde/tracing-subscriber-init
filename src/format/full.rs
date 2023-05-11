@@ -96,7 +96,7 @@ mod test {
 
     use super::filtered as full_filtered;
 
-    use crate::{config::test::TestConfig, set_default, TestAll};
+    use crate::{utils::test::TestConfig, set_default, TestAll};
 
     #[test]
     fn full_filtered_works() {

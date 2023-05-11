@@ -329,7 +329,7 @@ mod initialize;
 mod utils;
 
 pub use config::Config as TracingConfig;
-pub use config::TestAll;
+pub use utils::TestAll;
 pub use format::compact::compact;
 pub use format::compact::filtered as compact_filtered;
 pub use format::full::filtered as full_filtered;

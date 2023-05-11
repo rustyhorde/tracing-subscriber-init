@@ -7,6 +7,9 @@
 // modified, or distributed except according to those terms.
 
 use tracing::Level;
+use tracing_subscriber::fmt::format::FmtSpan;
+
+use crate::TracingConfig;
 
 #[cfg(debug_assertions)]
 pub(crate) fn get_effective_level(quiet: u8, verbosity: u8) -> Level {
@@ -36,9 +39,58 @@ pub(crate) fn get_effective_level(_quiet: u8, verbosity: u8) -> Level {
     }
 }
 
+#[doc(hidden)]
+#[derive(Clone, Copy, Debug)]
+pub struct TestAll;
+
+impl TracingConfig for TestAll {
+    fn quiet(&self) -> u8 {
+        0
+    }
+
+    fn verbose(&self) -> u8 {
+        3
+    }
+
+    #[cfg(feature = "json")]
+    fn with_current_span(&self) -> bool {
+        true
+    }
+
+    fn with_file(&self) -> bool {
+        true
+    }
+
+    fn with_line_number(&self) -> bool {
+        true
+    }
+
+    fn with_span_events(&self) -> Option<FmtSpan> {
+        Some(FmtSpan::FULL)
+    }
+
+    #[cfg(feature = "json")]
+    fn with_span_list(&self) -> bool {
+        true
+    }
+
+    fn with_target(&self) -> bool {
+        true
+    }
+
+    fn with_thread_ids(&self) -> bool {
+        true
+    }
+
+    fn with_thread_names(&self) -> bool {
+        true
+    }
+}
+
 #[cfg(test)]
-mod test {
+pub(crate) mod test {
     use super::get_effective_level;
+    use crate::TracingConfig;
     use tracing::Level;
 
     #[cfg(debug_assertions)]
@@ -67,5 +119,41 @@ mod test {
         assert_eq!(Level::DEBUG, get_effective_level(0, 3));
         assert_eq!(Level::TRACE, get_effective_level(0, 4));
         assert_eq!(Level::TRACE, get_effective_level(0, 5));
+    }
+
+    #[derive(Clone, Debug)]
+    pub(crate) struct TestConfig;
+
+    impl TracingConfig for TestConfig {
+        fn quiet(&self) -> u8 {
+            0
+        }
+
+        fn verbose(&self) -> u8 {
+            1
+        }
+    }
+
+    #[derive(Clone, Debug)]
+    pub(crate) struct TestJson;
+
+    impl TracingConfig for TestJson {
+        fn quiet(&self) -> u8 {
+            0
+        }
+
+        fn verbose(&self) -> u8 {
+            1
+        }
+
+        #[cfg(feature = "json")]
+        fn with_current_span(&self) -> bool {
+            true
+        }
+
+        #[cfg(feature = "json")]
+        fn with_span_list(&self) -> bool {
+            true
+        }
     }
 }
