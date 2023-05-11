@@ -95,7 +95,7 @@ mod test {
 
     use super::filtered as pretty_filtered;
 
-    use crate::{utils::test::TestConfig, set_default, TestAll};
+    use crate::{set_default, utils::test::TestConfig, TestAll};
 
     #[test]
     fn pretty_filtered_works() {

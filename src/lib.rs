@@ -329,7 +329,6 @@ mod initialize;
 mod utils;
 
 pub use config::Config as TracingConfig;
-pub use utils::TestAll;
 pub use format::compact::compact;
 pub use format::compact::filtered as compact_filtered;
 pub use format::full::filtered as full_filtered;
@@ -343,6 +342,7 @@ pub use format::pretty::pretty;
 pub use initialize::init;
 pub use initialize::set_default;
 pub use initialize::try_init;
+pub use utils::TestAll;
 
 #[cfg(feature = "time")]
 #[doc(no_inline)]
