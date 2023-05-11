@@ -365,3 +365,6 @@ pub use tracing_subscriber::fmt::time::Uptime;
 #[cfg(feature = "tstime")]
 #[doc(no_inline)]
 pub use tracing_subscriber::fmt::time::UtcTime;
+#[cfg(feature = "tstime")]
+#[doc(no_inline)]
+pub use tracing_subscriber::Layer;
