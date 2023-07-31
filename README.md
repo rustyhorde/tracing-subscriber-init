@@ -11,9 +11,7 @@ Convenience trait and functions to ease [`tracing-subscriber`][tracing-subscribe
 [![CI](https://github.com/rustyhorde/tracing-subscriber-init/actions/workflows/audit.yml/badge.svg)](https://github.com/rustyhorde/tracing-subscriber-init/actions)
 
 ## MSRV
-The current minimum supported rust version is 1.65.0 for non-Windows platforms
-
-The current minimum supported rust version is 1.65.0 for Windows platforms
+The current minimum supported rust version is 1.67.0
 
 [tracing-subscriber]: https://docs.rs/tracing-subscriber/latest/tracing_subscriber/
 
