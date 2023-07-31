@@ -130,8 +130,9 @@
         multiple_supertrait_upcastable,
         must_not_suspend,
         non_exhaustive_omitted_patterns_lint,
-        rustdoc_missing_doc_code_examples,
         strict_provenance,
+        type_privacy_lints,
+        rustdoc_missing_doc_code_examples,
     )
 )]
 #![cfg_attr(
@@ -163,6 +164,7 @@
         ellipsis_inclusive_range_patterns,
         explicit_outlives_requirements,
         exported_private_dependencies,
+        ffi_unwind_calls,
         forbidden_lint_groups,
         for_loops_over_fallibles,
         function_item_references,
@@ -181,7 +183,6 @@
         legacy_derive_helpers,
         let_underscore_drop,
         macro_use_extern_crate,
-        map_unit_fn,
         meta_variable_misuse,
         missing_abi,
         missing_copy_implementations,
@@ -265,19 +266,25 @@
         while_true,
     )
 )]
-// If nightly and unstable, allow `unstable_features`
-#![cfg_attr(all(msrv, feature = "unstable", nightly), allow(unstable_features))]
+#![cfg_attr(msrv, allow(single_use_lifetimes))]
+// If nightly or beta and unstable, allow `unstable_features`
+#![cfg_attr(
+    all(msrv, feature = "unstable", any(nightly, beta)),
+    allow(unstable_features)
+)]
 // The unstable lints
 #![cfg_attr(
     all(msrv, feature = "unstable", nightly),
     deny(
-        ffi_unwind_calls,
         fuzzy_provenance_casts,
         lossy_provenance_casts,
         multiple_supertrait_upcastable,
         must_not_suspend,
         non_exhaustive_omitted_patterns,
+        private_bounds,
+        private_interfaces,
         unfulfilled_lint_expectations,
+        unnameable_types,
     )
 )]
 // If nightly and not unstable, deny `unstable_features`
@@ -286,19 +293,41 @@
 #![cfg_attr(
     all(msrv, nightly),
     deny(
-        invalid_macro_export_arguments,
-        suspicious_double_ref_op,
-        undefined_naked_function_abi,
+        ambiguous_glob_imports,
+        incorrect_fn_null_checks,
+        invalid_reference_casting,
+        unknown_diagnostic_attributes
     )
 )]
 // nightly or beta only lints
-#![cfg_attr(all(msrv, any(beta, nightly)), deny(ambiguous_glob_reexports))]
+#![cfg_attr(
+    all(msrv, any(beta, nightly)),
+    deny(
+        ambiguous_glob_reexports,
+        byte_slice_in_packed_struct_with_derive,
+        dropping_copy_types,
+        dropping_references,
+        forgetting_copy_types,
+        forgetting_references,
+        hidden_glob_reexports,
+        invalid_from_utf8,
+        invalid_macro_export_arguments,
+        invalid_nan_comparisons,
+        map_unit_fn,
+        suspicious_double_ref_op,
+        undefined_naked_function_abi,
+        unused_associated_type_bounds,
+    )
+)]
 // beta only lints
 // #![cfg_attr( all(msrv, beta), deny())]
 // beta or stable only lints
 // #![cfg_attr(all(msrv, any(beta, stable)), deny())]
 // stable only lints
-// #![cfg_attr(all(msrv, stable), deny())]
+#![cfg_attr(
+    all(msrv, stable),
+    deny(bindings_with_variant_name, implied_bounds_entailment)
+)]
 // clippy lints
 #![cfg_attr(msrv, deny(clippy::all, clippy::pedantic))]
 // #![cfg_attr(msrv, allow())]
