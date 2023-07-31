@@ -44,7 +44,7 @@ pub trait Config {
     }
     /// Configures how synthesized events are emitted at points in the span lifecycle.
     /// This defaults to [`None`](std::option::Option::None).
-    /// See [with_span_event](https://docs.rs/tracing-subscriber/latest/tracing_subscriber/fmt/struct.Layer.html#method.with_span_events)
+    /// See [`with_span_event`](https://docs.rs/tracing-subscriber/latest/tracing_subscriber/fmt/struct.Layer.html#method.with_span_events)
     fn with_span_events(&self) -> Option<FmtSpan> {
         None
     }

@@ -145,7 +145,6 @@
         bare_trait_objects,
         // box_pointers,
         break_with_label_and_loop,
-        byte_slice_in_packed_struct_with_derive,
         clashing_extern_declarations,
         coherence_leak_check,
         confusable_idents,
