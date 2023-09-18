@@ -195,7 +195,7 @@ jobs:
         run: |
           cargo test-all-features
       - name: 🙊 Code Coverage (vergen) 🙊
-        run: cargo tarpaulin --config tarpaulin.toml --exclude-files src/lib.rs src/config.rs target/* --out Xml --skip-clean --target-dir target/coverage
+        run: cargo tarpaulin --config tarpaulin.toml --exclude-files src/lib.rs src/config.rs target/* --out xml --skip-clean --target-dir target/coverage
       - name: 🙊 Upload Code Coverage 🙊
         uses: codecov/codecov-action@v3
         with:
