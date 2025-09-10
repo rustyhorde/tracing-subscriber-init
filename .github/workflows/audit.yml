@@ -1,17 +1,16 @@
 on:
+  workflow_dispatch:
   # Trigger the workflow on push to master or any pull request
   # Ignore all tags
   push:
     branches:
       - master
-    tags-ignore:
+    tags-ignore: 
       - "*"
   pull_request:
-    branches:
-      - "*"
   schedule:
     # * is a special character in YAML so you have to quote this string
-    - cron: "23 3 * * *"
+    - cron: "22 3 * * *"
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
@@ -34,5 +33,5 @@ jobs:
         uses: rustyhorde/audit-check@v1
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          deny: "warnings"
-          create_issue: "true"
+          deny: 'warnings'
+          create_issue: 'true'
