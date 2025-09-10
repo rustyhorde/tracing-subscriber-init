@@ -9,7 +9,7 @@
 use anyhow::Result;
 use tracing::subscriber::DefaultGuard;
 use tracing_subscriber::{
-    prelude::__tracing_subscriber_SubscriberExt, registry, util::SubscriberInitExt, Layer, Registry,
+    Layer, Registry, prelude::__tracing_subscriber_SubscriberExt, registry, util::SubscriberInitExt,
 };
 
 /// Creates a [`Registry`](tracing_subscriber::registry::Registry), adds the given [`Layer`s](tracing_subscriber::Layer)
@@ -54,7 +54,7 @@ pub fn try_init(layers: Vec<Box<dyn Layer<Registry> + Send + Sync + 'static>>) -
 mod test {
     use tracing_subscriber::Layer;
 
-    use crate::{full_filtered, TestAll};
+    use crate::{TestAll, full_filtered};
 
     use super::set_default;
 

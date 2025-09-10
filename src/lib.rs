@@ -389,6 +389,9 @@ pub use time::format_description::well_known::Rfc2822;
 pub use time::format_description::well_known::Rfc3339;
 #[cfg(feature = "tstime")]
 #[doc(no_inline)]
+pub use tracing_subscriber::Layer;
+#[cfg(feature = "tstime")]
+#[doc(no_inline)]
 pub use tracing_subscriber::fmt::time::OffsetTime;
 #[cfg(feature = "tstime")]
 #[doc(no_inline)]
@@ -399,6 +402,3 @@ pub use tracing_subscriber::fmt::time::Uptime;
 #[cfg(feature = "tstime")]
 #[doc(no_inline)]
 pub use tracing_subscriber::fmt::time::UtcTime;
-#[cfg(feature = "tstime")]
-#[doc(no_inline)]
-pub use tracing_subscriber::Layer;

@@ -6,17 +6,17 @@
 // option. All files in the project carrying such notice may not be copied,
 // modified, or distributed except according to those terms.
 
-use tracing::{metadata::LevelFilter, Subscriber};
+use tracing::{Subscriber, metadata::LevelFilter};
 use tracing_subscriber::{
+    Layer,
     filter::Filtered,
     fmt::{
         self,
         format::{DefaultFields, Format, Full},
     },
-    Layer,
 };
 
-use crate::{utils::get_effective_level, TracingConfig};
+use crate::{TracingConfig, utils::get_effective_level};
 
 /// Create a [`Full`](tracing_subscriber::fmt::format::Full) format layer configured from the given [`TracingConfig`].
 ///
@@ -91,12 +91,12 @@ where
 
 #[cfg(test)]
 mod test {
-    use tracing::{debug, error, info, span, trace, warn, Level};
+    use tracing::{Level, debug, error, info, span, trace, warn};
     use tracing_subscriber::Layer;
 
     use super::filtered as full_filtered;
 
-    use crate::{set_default, utils::test::TestConfig, TestAll};
+    use crate::{TestAll, set_default, utils::test::TestConfig};
 
     #[test]
     fn full_filtered_works() {
