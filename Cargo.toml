@@ -32,3 +32,6 @@ tracing-subscriber = "=0.3.19"
 
 [build-dependencies]
 rustversion = "1.0.22"
+
+[lints.rust]
+unexpected_cfgs = { level = "allow", check-cfg = ['cfg(coverage,coverage_nightly)'] }
