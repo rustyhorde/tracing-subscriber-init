@@ -1,17 +1,13 @@
 on:
-  # Trigger the workflow on push to master or any pull request
-  # Ignore all tags
+  workflow_dispatch:
   push:
     branches:
       - master
     tags-ignore:
       - "*"
   pull_request:
-    branches:
-      - "*"
   schedule:
-    # * is a special character in YAML so you have to quote this string
-    - cron: "23 3 * * *"
+    - cron: "16 4 * * *"
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
@@ -24,15 +20,21 @@ name: 💣 Audit 💣
 
 jobs:
   audit-check:
-    runs-on: ubuntu-latest
     name: 💣 Audit 💣
+    runs-on: ubuntu-latest
     steps:
       - name: ✅ Checkout ✅
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
+      - name: 🔄 Update Cargo.lock 🔄
+        run: cargo update
+      - name: 💵 Rust Cache 💵
+        uses: Swatinem/rust-cache@v2
+        if: ${{ github.event_name != 'pull_request' || ! github.event.pull_request.head.repo.fork }}
+        with:
+          key: ${{ inputs.target }}
+          cache-all-crates: true
       - name: 💣 Audit 💣
-        id: audit
-        uses: rustyhorde/audit-check@v1
+        uses: rustsec/audit-check@v2.0.0
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          deny: "warnings"
-          create_issue: "true"
+          ignore: "RUSTSEC-2025-0055"

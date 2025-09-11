@@ -1,5 +1,5 @@
 use tracing_subscriber::Layer;
-use tracing_subscriber_init::{full_filtered, init, try_init, TestAll};
+use tracing_subscriber_init::{TestAll, full_filtered, init, try_init};
 
 #[test]
 fn init_works_then_try_init_err() {

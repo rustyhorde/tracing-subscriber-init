@@ -135,6 +135,7 @@ pub(crate) mod test {
     }
 
     #[derive(Clone, Debug)]
+    #[allow(dead_code)]
     pub(crate) struct TestJson;
 
     impl TracingConfig for TestJson {
