@@ -7,7 +7,7 @@ Convenience trait and functions to ease [`tracing-subscriber`][tracing-subscribe
 [![Crates.io](https://img.shields.io/crates/d/tracing-subscriber-init.svg)](https://crates.io/crates/tracing-subscriber-init)
 [![docs.rs](https://docs.rs/tracing-subscriber-init/badge.svg)](https://docs.rs/tracing-subscriber-init)
 [![codecov](https://codecov.io/gh/rustyhorde/tracing-subscriber-init/branch/master/graph/badge.svg?token=cBXro7o2UN)](https://codecov.io/gh/rustyhorde/tracing-subscriber-init)
-[![CI](https://github.com/rustyhorde/tracing-subscriber-init/actions/workflows/main.yml/badge.svg)](https://github.com/rustyhorde/tracing-subscriber-init/actions)
+[![CI](https://github.com/rustyhorde/tracing-subscriber-init/actions/workflows/tracing-subscriber-init.yml/badge.svg)](https://github.com/rustyhorde/tracing-subscriber-init/actions)
 [![CI](https://github.com/rustyhorde/tracing-subscriber-init/actions/workflows/audit.yml/badge.svg)](https://github.com/rustyhorde/tracing-subscriber-init/actions)
 
 ## MSRV
@@ -32,4 +32,5 @@ at your option.
 
 Unless you explicitly state otherwise, any contribution intentionally submitted
 for inclusion in the work by you, as defined in the Apache-2.0 license, shall be dual licensed as above, without any
+
 additional terms or conditions.
