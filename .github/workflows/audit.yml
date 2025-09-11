@@ -20,6 +20,7 @@ name: 💣 Audit 💣
 
 jobs:
   audit-check:
+    name: 💣 Audit 💣
     runs-on: ubuntu-latest
     steps:
       - name: ✅ Checkout ✅
