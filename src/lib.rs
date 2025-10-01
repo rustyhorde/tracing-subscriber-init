@@ -374,6 +374,7 @@ pub use self::initialize::init;
 pub use self::initialize::set_default;
 pub use self::initialize::try_init;
 pub use self::utils::TestAll;
+pub use self::utils::get_effective_level;
 
 #[cfg(feature = "time")]
 #[doc(no_inline)]

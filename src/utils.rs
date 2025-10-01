@@ -11,8 +11,10 @@ use tracing_subscriber::fmt::format::FmtSpan;
 
 use crate::TracingConfig;
 
+/// Determine the effective logging level based on quiet and verbosity settings.
 #[cfg(debug_assertions)]
-pub(crate) fn get_effective_level(quiet: u8, verbosity: u8) -> Level {
+#[must_use]
+pub fn get_effective_level(quiet: u8, verbosity: u8) -> Level {
     if verbosity > 0 {
         match verbosity {
             1 => Level::DEBUG,
@@ -28,7 +30,9 @@ pub(crate) fn get_effective_level(quiet: u8, verbosity: u8) -> Level {
     }
 }
 
+/// Determine the effective logging level based on quiet and verbosity settings.
 #[cfg(not(debug_assertions))]
+#[must_use]
 pub(crate) fn get_effective_level(_quiet: u8, verbosity: u8) -> Level {
     match verbosity {
         0 => Level::ERROR,
