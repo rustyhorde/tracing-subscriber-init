@@ -33,7 +33,7 @@ pub fn get_effective_level(quiet: u8, verbosity: u8) -> Level {
 /// Determine the effective logging level based on quiet and verbosity settings.
 #[cfg(not(debug_assertions))]
 #[must_use]
-pub(crate) fn get_effective_level(_quiet: u8, verbosity: u8) -> Level {
+pub fn get_effective_level(_quiet: u8, verbosity: u8) -> Level {
     match verbosity {
         0 => Level::ERROR,
         1 => Level::WARN,
